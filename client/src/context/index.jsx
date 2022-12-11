@@ -41,6 +41,31 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const getCampaigns = async () => {
+    const campaigns = await contract.call('getCampaigns');
+    const parsedCampaigns = campaigns.map((campaign, idx) => ({
+      owner: campaign.owner,
+      title: campaign.title,
+      description: campaign.description,
+      target: ethers.utils.formatEther(campaign.target.toString()),
+      deadline: campaign.deadline.toNumber(),
+      amountCollected: ethers.utils.formatEther(
+        campaign.amountCollected.toString()
+      ),
+      image: campaign.image,
+      id: idx,
+    }));
+    return parsedCampaigns;
+  };
+
+  const getUserCampaigns = async () => {
+    const allCampaigns = await getCampaigns();
+    const filteredCampaigns = allCampaigns.filter(
+      (campaign) => campaign.owner === address
+    );
+    return filteredCampaigns;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -48,6 +73,8 @@ export const AppContextProvider = ({ children }) => {
         connect,
         contract,
         createCampaign: publishCampaign,
+        getCampaigns,
+        getUserCampaigns,
       }}
     >
       {children}

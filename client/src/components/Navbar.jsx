@@ -4,14 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CustomButton } from './';
 import { logo, menu, search, thirdweb } from '../assets';
 import { navlinks } from '../constants';
+import { useAppContext } from '../context';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { address, connect } = useAppContext();
   const [isActive, setIsActive] = useState('dashboard');
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
-
-  const address = '0xzxczc';
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
@@ -39,7 +39,7 @@ const Navbar = () => {
             if (address) {
               navigate('create-campaign');
             } else {
-              // TODO: connect wallet
+              connect();
             }
           }}
         />
@@ -117,7 +117,7 @@ const Navbar = () => {
                 if (address) {
                   navigate('create-campaign');
                 } else {
-                  // TODO: connect wallet
+                  connect();
                 }
               }}
             />
