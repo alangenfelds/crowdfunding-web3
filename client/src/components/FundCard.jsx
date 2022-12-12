@@ -23,7 +23,7 @@ const FundCard = ({
       <img
         src={image}
         alt="campaign"
-        className="w-full h-[158px] object-cover rounded-[15px]"
+        className="w-full h-[158px] object-contain rounded-[15px]"
       />
 
       <div className="flex flex-col p-4">

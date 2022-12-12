@@ -8,6 +8,7 @@ import {
 } from '@thirdweb-dev/react';
 
 import { ethers } from 'ethers';
+import { parse } from '@ethersproject/transactions';
 
 const AppContext = createContext();
 
@@ -66,6 +67,29 @@ export const AppContextProvider = ({ children }) => {
     return filteredCampaigns;
   };
 
+  const donate = async (id, amount) => {
+    const data = await contract.call('donateToCampaign', id, {
+      value: ethers.utils.parseEther(amount),
+    });
+    console.log('Donated successfully! ', data);
+  };
+
+  const getDonations = async (id) => {
+    const donations = await contract.call('getDonators', id);
+    const numberOfDonations = donations[0].length;
+
+    const parsedDonations = [];
+
+    for (let i = 0; i < numberOfDonations; i++) {
+      parsedDonations.push({
+        donator: donations[0][i],
+        donation: ethers.utils.formatEther(donations[1][i].toString()),
+      });
+    }
+
+    return parsedDonations;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -75,6 +99,8 @@ export const AppContextProvider = ({ children }) => {
         createCampaign: publishCampaign,
         getCampaigns,
         getUserCampaigns,
+        donate,
+        getDonations,
       }}
     >
       {children}

@@ -31,7 +31,7 @@ const Sidebar = () => {
 
   return (
     <div className="flex flex-col justify-between items-center sticky top-5 h-[93vh]">
-      <Link>
+      <Link to="/">
         <Icon
           styles="w=[52px] h-[52px] bg-[#2c2f32]"
           imgUrl={logo}
