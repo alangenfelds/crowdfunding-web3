@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useAppContext } from '../context';
 import { CountBox, CustomButton, Loader } from '../components';
@@ -10,6 +10,7 @@ import { thirdweb } from '../assets';
 
 const CampaignDetails = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const { getDonations, contract, address, donate } = useAppContext();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -27,8 +28,8 @@ const CampaignDetails = () => {
     setIsLoading(true);
 
     await donate(state.id, amount);
-
     setIsLoading(false);
+    navigate('/');
   };
 
   useEffect(() => {
